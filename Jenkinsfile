@@ -100,7 +100,7 @@ pipeline {
             echo "${BRANCH_NAME}"
             echo "${JENKINS_URL}"
             mail to: 'enariya0410@gmail.com', subject: 'Build status' ,body: 'this build is successful'
-                )
+                
 
         }
 
