@@ -2,7 +2,9 @@ pipeline {
     agent { label 'master'}
 
     environment {
-        function_name = 'java-lambda-test_Dev'
+        function_Dev = 'java-lambda-test_Dev'
+        function_Test = 'java-lambda-test_Test'
+        function_Prod = 'java-lambda-test_Prod'
 
     }
 
@@ -55,25 +57,22 @@ pipeline {
             parallel {
 
                 stage('Deploy to Dev') {
-                    env.function_name = "java-lambda-test_Dev"
                     steps {
                         echo 'Build'
-                        sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket ektajavaartifacts --s3-key sample-1.0.3.jar"
+                        sh "aws lambda update-function-code --function-name $function_Dev --region us-east-1 --s3-bucket ektajavaartifacts --s3-key sample-1.0.3.jar"
                     }
                 }
 
                 stage('Deploy to test ') {
-                    env.function_name = "java-lambda-test_Test"
                     steps {
                         echo 'Build'
-                        sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket ektajavaartifacts --s3-key sample-1.0.3.jar"
+                        sh "aws lambda update-function-code --function-name $function_Test --region us-east-1 --s3-bucket ektajavaartifacts --s3-key sample-1.0.3.jar"
                     }
                 }
             }
         }
 
         stage('Deploy to Prod') {
-            env.function_name = "java-lambda-test_Prod"
             when {
                 expression { return params.Environment == 'Prod'}
             }
@@ -85,12 +84,11 @@ pipeline {
         }
 
         stage('Release to Prod') {
-            env.function_name = "java-lambda-test_Prod"
             when {
                 branch 'main'
             }
             steps {
-                sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket bermtecbatch31 --s3-key sample-1.0.3.jar"
+                sh "aws lambda update-function-code --function-name $function_Prod --region us-east-1 --s3-bucket ektajavaartifacts --s3-key sample-1.0.3.jar"
             }
         }
         // CD Ended
