@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'master'}
+    agent any
 
     environment {
         function_Dev = 'java-lambda-test_Dev'
