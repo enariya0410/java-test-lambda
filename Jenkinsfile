@@ -16,7 +16,6 @@ pipeline {
     }
 
     stages {
-
         // CI Start
         stage('Build') {
             steps {
@@ -24,6 +23,7 @@ pipeline {
                 sh 'mvn package'
             }
         }
+
         stage("SonarQube analysis") {
              agent any
 
@@ -38,7 +38,8 @@ pipeline {
                      sh 'mvn sonar:sonar'
                  }
              }
-         }
+        }
+
         stage('Push') {
             steps {
                 echo 'Push'
@@ -54,7 +55,7 @@ pipeline {
             parallel {
 
                 stage('Deploy to Dev') {
-                    function_name = 'java-lambda-test_Dev'
+                    env.function_name = "java-lambda-test_Dev"
                     steps {
                         echo 'Build'
                         sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket ektajavaartifacts --s3-key sample-1.0.3.jar"
@@ -62,7 +63,7 @@ pipeline {
                 }
 
                 stage('Deploy to test ') {
-                    function_name = 'java-lambda-test_Test'
+                    env.function_name = "java-lambda-test_Test"
                     steps {
                         echo 'Build'
                         sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket ektajavaartifacts --s3-key sample-1.0.3.jar"
@@ -72,7 +73,7 @@ pipeline {
         }
 
         stage('Deploy to Prod') {
-            function_name = 'java-lambda-test_Prod'
+            env.function_name = "java-lambda-test_Prod"
             when {
                 expression { return params.Environment == 'Prod'}
             }
@@ -84,7 +85,7 @@ pipeline {
         }
 
         stage('Release to Prod') {
-            function_name = 'java-lambda-test_Prod'
+            env.function_name = "java-lambda-test_Prod"
             when {
                 branch 'main'
             }
