@@ -99,10 +99,7 @@ pipeline {
             echo "${env.BUILD_ID}"
             echo "${BRANCH_NAME}"
             echo "${JENKINS_URL}"
-            emailext (
-                    to: 'enariya0410@gmail.com', 
-                    subject: "Build status", 
-                    body: "this build is successful", 
+            mail to: 'enariya0410@gmail.com', subject: 'Build status' ,body: 'this build is successful'
                 )
 
         }
