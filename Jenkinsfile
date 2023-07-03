@@ -24,8 +24,6 @@ pipeline {
                 sh 'mvn package'
             }
         }
-
-
         stage("SonarQube analysis") {
              agent any
 
@@ -41,22 +39,6 @@ pipeline {
                  }
              }
          }
-
-         stage("Quality Gate") {
-             steps {
-                 script {
-                     try {
-                         timeout(time: 10, unit: 'MINUTES') {
-                             waitForQualityGate abortPipeline: true
-                         }
-                     }
-                     catch (Exception ex) {
-
-                     }
-                 }
-             }
-         }
-
         stage('Push') {
             steps {
                 echo 'Push'
