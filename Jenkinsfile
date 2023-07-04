@@ -15,7 +15,7 @@ pipeline {
     stage('Deploy to Azure') {
       environment {
         AZURE_CREDENTIALS = credentials('hahaha')
-        AZURE_APP_NAME = 'java-env-Dev'
+        AZURE_APP_NAME = 'lolplease'
         AZURE_RESOURCE_GROUP = 'azureJenkinsJava'
       }
       
