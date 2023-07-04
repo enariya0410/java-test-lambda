@@ -20,11 +20,6 @@ pipeline {
       }
       
       steps {
-        // Install Azure CLI on Jenkins agent
-        sh 'curl -sL https://aka.ms/InstallAzureCLIDeb --output azure-cli.sh'
-        sh 'bash azure-cli.sh --prefix ~/.azure-cli --install'
-
-
         // Authenticate with Azure using service principal credentials
         withCredentials([azureServicePrincipal(credentialsId: 'hahaha', variable: 'AZURE_CREDENTIALS')]) {
           sh 'az login --service-principal -u $AZURE_CREDENTIALS_USR -p $AZURE_CREDENTIALS_PSW --tenant $AZURE_CREDENTIALS_TENANT'
