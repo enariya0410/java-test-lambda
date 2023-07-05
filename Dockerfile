@@ -1,4 +1,4 @@
-FROM maven:3.2.3-jdk-7u65 AS maven_build
+FROM maven:latest AS maven_build
 
 COPY pom.xml /tmp/
 
